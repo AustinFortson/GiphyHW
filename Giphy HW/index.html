@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GiphyHW</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+    button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }
+    </style>
+</head>
+<body>
+    <div id = "buttons-view"></div>
+
+    <form id = "movie-form">
+        <label for="movie-input">Add A Movie To See Related Gifs!</label>
+        <input type="text" id="movie-input">
+        <br>
+
+        <input id="add-movie" type="submit" value="Add A Movie To See Related Gifs!">
+    </form>
+
+    <div id ="movies-view"></div>
+
+    <script>src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"</script>
+    <script type="text/javascript">
+    
+    $("button").on("click", function() {
+
+    var movies = ["Shrek", "Lego Batman", "Friday"];
+
+    var movie = $(this).attr("data-movie");
+
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        movie + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+      
+    .then(function(response) {
+        console.log(queryURL);
+
+        console.log(response);
+
+        var results = response.data;
+
+        for (var i = 0; i < results.length; i++) {
+
+            var movieDiv = $("<div>");
+            
+            var p = $("<p>").text("Rating: " + results[i].rating);
+
+            var movieImage = $("<img>");
+
+            movieImage.attr("src", results[i].images.fixed_height.url);
+
+            movieDiv.append(p);
+            movieDiv.append(movieImage);
+
+            $("#movies-view").prepend(movieDiv);
+            }
+        });
+    });
+
+    
+    </script>
+    
+</body>
+</html>
